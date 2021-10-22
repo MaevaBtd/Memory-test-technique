@@ -1,0 +1,52 @@
+body {
+    background:  lightgray;
+}
+
+header {
+    background: rgb(150, 150, 150);
+    text-align: center;
+    padding: 1em;
+    margin-bottom: 50px;
+}
+
+#plateau{
+    
+    background: rgb(191, 179, 255);
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    width: 770px;
+    
+}
+
+.carte {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+}
+
+.cache{
+    background: rgb(158, 158, 158);
+    
+}
+.cache:hover {
+ background: grey;
+}
+
+.image{
+    background: url(images/cards.png);
+}
+
+.progress-bar-container {
+    margin: 20px auto;
+    height: 30px;
+    width: 770px;
+    background-color:grey;
+  
+}
+.progress-bar {
+    height: 30px;
+    width: 0px;
+    background-color: red; 
+}
