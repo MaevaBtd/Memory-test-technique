@@ -1,6 +1,8 @@
+// Import
 const http = require('http');
 const app = require('./app');
 
+// Perment de s'assurer que le port est de type number
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -12,9 +14,12 @@ const normalizePort = val => {
   }
   return false;
 };
+
+// Définition du port sur lequel le backend sera executé
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+// Fonction permettant la gestion des erreurs 
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -35,6 +40,7 @@ const errorHandler = error => {
   }
 };
 
+// Création du server HTTP
 const server = http.createServer(app);
 
 server.on('error', errorHandler);

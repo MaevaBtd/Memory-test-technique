@@ -1,0 +1,44 @@
+body {
+  background: lightgray;
+}
+body header {
+  background: #969696;
+  text-align: center;
+  padding: 1em;
+  margin-bottom: 50px;
+}
+body #plateau {
+  background: #bfb3ff;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  width: 770px;
+}
+body #plateau .carte {
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+}
+body #plateau .carte.cache {
+  background: #9e9e9e;
+}
+body #plateau .carte.cache:hover {
+  background: grey;
+}
+body #plateau .carte.image {
+  background: url(images/cards.png);
+}
+body .progress-bar-container {
+  margin: 20px auto;
+  height: 30px;
+  width: 770px;
+  background-color: grey;
+}
+body .progress-bar-container .progress-bar {
+  height: 30px;
+  width: 0px;
+  background-color: red;
+}
+
+/*# sourceMappingURL=style.css.map */
