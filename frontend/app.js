@@ -1,40 +1,41 @@
-/*
+let currentImages = [];
 
-1- On travaille dans un objet, qui sera lancé au chargement du DOM - OK
+let previousResults = [];
 
-*/
+let playersTime = 0;
 
-/*
-2 - Dans l'objet :
-    - Une méthode qui réceptionne le listener du DOMContentLoaded
-    - Ensuite on veut générer dynamiquement 28 div
-    - Ensuite on les ajoute au DOM dans leur container
-*/
+let refreshIntervalId;
 
-/* 
+let app = {
 
-3 - 
+    init: function() {   
+        const header = document.getElementById('header');
+        
+        app.addCard();     
 
-*/
-var currentImages = [];
+        $.get("http://localhost:3000/api/results",
+        function (data, status) {
+           previousResults = data;
+           $(function () {  
+            $('<h3>Précédents gagnants</h3>').appendTo('#header');
+        });
 
-
-var app = {
-
-
-    init: function() {
-         
-        app.addCard();
-       
+           data.forEach(player => {
+            $(function () {  
+                $('<p> Nom: '+ player.name + '<br>'+'Record: '+ player.time +' secondes </p>').appendTo('#header');
+            }); 
+           });
+           
+        });
     },
 
     addCard: function(){
 
-        var monTableau = [];
-        var plateau = document.getElementById('plateau');
+        let monTableau = [];
+        const plateau = document.getElementById('plateau');
         
-        for(var index = 0; index<28; index++){
-            var addDiv = document.createElement('div');
+        for(let index = 0; index<28; index++){
+            let addDiv = document.createElement('div');
            
             addDiv.classList.add('carte');
             addDiv.classList.add('cache');
@@ -50,28 +51,27 @@ var app = {
               
         }
 
-        var randomTab = app.shuffle(monTableau);
+        let randomTab = app.shuffle(monTableau);
 
-        for(var index = 0; index<28; index++){
+        for(let index = 0; index<28; index++){
             
             plateau.appendChild(randomTab[index]);
         }
 
         $(plateau).one('click', function(){
-            var progressBar = document.getElementsByClassName('progress-bar');
+            const progressBar = document.getElementsByClassName('progress-bar');
             $progressBar = $(progressBar); 
-            var progress = 0;
-            var refreshIntervalId = setInterval(function() {
+            let progress = 0;
+
+            refreshIntervalId = setInterval(function() {
+                playersTime = playersTime+1;
                 progress = progress + 3,2;
                 $progressBar.css("width", progress + "px");
-                console.log(progress);
                 if(progress >= 765) {
                     clearInterval(refreshIntervalId);
                     alert("c'est perdu :'(");
                 };
-                }, 1000);
-
-            
+                }, 1000);          
         });
     },
 
@@ -110,7 +110,7 @@ var app = {
     checkPair: function() {
         if (currentImages.length === 2) {     
             if (currentImages[0].style.backgroundPositionY != currentImages[1].style.backgroundPositionY) {
-                var plateau = document.getElementById('plateau');
+                let plateau = document.getElementById('plateau');
                 $plateau = $(plateau);
                 $plateau.css("pointer-events", "none");
                 setTimeout(function(){$(currentImages[0]).removeClass('image').addClass('cache');
@@ -119,16 +119,23 @@ var app = {
                 $plateau.css("pointer-events", "auto");}, 1000);
             } else {
                 currentImages = [];
-                var cardsList = [...document.getElementsByClassName('carte')];
-                var filteredCards = cardsList.filter(card => card.className === 'carte image');
+                let cardsList = [...document.getElementsByClassName('carte')];
+                let filteredCards = cardsList.filter(card => card.className === 'carte image');
                 if (filteredCards.length === 28) {
-                    setTimeout(function(){alert('Vous avez gagné');}, 200);
+                    clearInterval(refreshIntervalId);
+                    setTimeout(function(){alert('Vous avez gagné en ' + playersTime + ' secondes');}, 200);
+                    $.post("http://localhost:3000/api/results",
+                    {
+                        name: 'Jean-Michel',
+                        time: playersTime
+                    }, function(data) {
+                        alert(data);
+                });
                 };
             };
         }; 
     },
     
 }
-
 
 document.addEventListener('DOMContentLoaded', app.init);
